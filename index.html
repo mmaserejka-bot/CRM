@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Адвокат CRM — личная система юриста</title>
+<style>
+:root{--bg:#f3f5ee;--panel:#fffdf7;--text:#173b2d;--muted:#68756d;--line:#d9d8c8;--accent:#b28a2e;--accent2:#176044;--danger:#a53b32;--ok:#18704d}
+
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--text)}
+.app{display:flex;min-height:100vh}.side{width:240px;background:linear-gradient(180deg,#123d2e,#0b2b20);color:#f8f1d0;padding:20px 14px;position:fixed;height:100vh;border-right:3px solid #b28a2e}.brand{font-size:21px;font-weight:800;padding:0 12px 18px;color:#f7edc7}.brand span{color:#d4b45b}.crest{width:76px;height:86px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;border:2px solid #d4b45b;border-radius:42% 42% 48% 48%;font-size:35px;color:#d4b45b;background:#123d2e;box-shadow:inset 0 0 0 4px #123d2e,inset 0 0 0 6px #d4b45b}.nav button{display:block;width:100%;padding:11px 12px;margin:3px 0;border:0;border-radius:8px;background:transparent;color:#dbe6de;text-align:left;font-size:14px;cursor:pointer}.nav button.active,.nav button:hover{background:#1d5742;color:#fff2bd}.btn.primary{background:#176044;border-color:#176044}.card{box-shadow:0 3px 12px #163b2a12}
+.main{margin-left:240px;width:calc(100% - 240px);padding:28px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.top h1{margin:0;font-size:27px;color:#173b2d}.top{border-bottom:2px solid #b28a2e;padding-bottom:14px}.actions{display:flex;gap:8px}.btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 13px;cursor:pointer;font-weight:600}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}.stat .label{color:var(--muted);font-size:13px}.stat .num{font-size:28px;font-weight:800;margin-top:6px}.section{margin-top:18px}.section h2{font-size:17px;margin:0 0 12px}.tablewrap{overflow:auto;background:#fff;border:1px solid var(--line);border-radius:12px}.toolbar{padding:12px;display:flex;gap:8px;border-bottom:1px solid var(--line)}input,select,textarea{font:inherit;border:1px solid var(--line);border-radius:8px;padding:9px;background:#fff}input.search{min-width:280px}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:13px;border-bottom:1px solid var(--line);font-size:14px}th{font-size:12px;color:var(--muted);text-transform:uppercase}tr:last-child td{border-bottom:0}.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700;background:#eff6ff;color:#1d4ed8}.badge.ok{background:#ecfdf5;color:#047857}.badge.warn{background:#fffbeb;color:#b45309}.muted{color:var(--muted)}.hidden{display:none}.modal{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modalbox{background:#fff;border-radius:14px;width:min(620px,100%);padding:22px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.formgrid .full{grid-column:1/-1}.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.empty{padding:35px;text-align:center;color:var(--muted)}
+@media(max-width:800px){.side{width:64px;padding:15px 8px}.brand{font-size:0}.brand span{font-size:20px}.nav button{font-size:0;text-align:center}.nav button:first-letter{font-size:18px}.main{margin-left:64px;width:calc(100% - 64px);padding:18px}.grid{grid-template-columns:1fr 1fr}.formgrid{grid-template-columns:1fr}.formgrid .full{grid-column:auto}}
+
+.case-tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin:0 -22px 18px;padding:0 22px}
+.case-tabs button{border:0;background:transparent;padding:10px 12px;cursor:pointer;color:var(--muted);font-weight:700}
+.case-tabs button.active{color:#176044;border-bottom:3px solid #b28a2e}
+.case-pane{display:none}.case-pane.active{display:block}
+.timeline{border-left:3px solid #d4b45b;margin:10px 0 0 8px;padding-left:18px}
+.timeline-item{position:relative;padding:0 0 18px}.timeline-item:before{content:"";position:absolute;left:-27px;top:4px;width:9px;height:9px;border-radius:50%;background:#176044;border:2px solid #fff}
+.file-row,.deadline-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.small{font-size:12px}
+
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#123d2e"></head>
+<body>
+<div class="app">
+<aside class="side"><div class="crest">⚖</div><div class="brand">АДВОКАТ <span>CRM</span></div><div class="nav">
+<button class="active" data-page="dashboard">🏠  Главная</button>
+<button data-page="clients">👤  Клиенты</button>
+<button data-page="cases">⚖️  Дела</button>
+<button data-page="tasks">✓  Задачи</button>
+<button data-page="calendar">📅  Календарь</button>
+<button data-page="finance">₽  Финансы</button>
+</div></aside>
+<main class="main">
+<section id="dashboard" class="page">
+<div class="top"><h1>Личный кабинет адвоката</h1><div class="actions"><button class="btn primary" onclick="openClient()">+ Клиент</button><button class="btn" onclick="openCase()">+ Дело</button></div></div>
+<div class="grid">
+<div class="card stat"><div class="label">Активные дела</div><div class="num" id="sCases">0</div></div>
+<div class="card stat"><div class="label">Клиенты</div><div class="num" id="sClients">0</div></div>
+<div class="card stat"><div class="label">Задачи и сроки</div><div class="num" id="sTasks">0</div></div>
+<div class="card stat"><div class="label">Задолженность</div><div class="num" id="sDebt">0 ₽</div></div>
+</div>
+<div class="illustration"><span class="pen">🖋️</span><b>Дела под контролем</b><span class="line"></span><span>⚜</span></div>
+<div class="section"><h2>Ближайшие события</h2><div class="tablewrap"><table><thead><tr><th>Дата</th><th>Событие</th><th>Дело</th><th>Статус</th></tr></thead><tbody id="dashEvents"></tbody></table></div></div>
+</section>
+
+<section id="clients" class="page hidden"><div class="top"><h1>Клиенты</h1><button class="btn primary" onclick="openClient()">+ Добавить</button></div><div class="tablewrap"><div class="toolbar"><input class="search" id="clientSearch" placeholder="Поиск по ФИО или телефону" oninput="renderClients()"></div><table><thead><tr><th>ФИО / организация</th><th>Телефон</th><th>Email</th><th>Дела</th><th></th></tr></thead><tbody id="clientsTable"></tbody></table></div></section>
+
+<section id="cases" class="page hidden"><div class="top"><h1>Дела</h1><button class="btn primary" onclick="openCase()">+ Добавить</button></div><div class="tablewrap"><div class="toolbar"><input class="search" id="caseSearch" placeholder="Поиск по номеру, клиенту, суду" oninput="renderCases()"></div><table><thead><tr><th>Номер</th><th>Клиент</th><th>Категория</th><th>Суд</th><th>Статус</th><th></th></tr></thead><tbody id="casesTable"></tbody></table></div></section>
+
+<section id="tasks" class="page hidden"><div class="top"><h1>Задачи</h1><button class="btn primary" onclick="openTask()">+ Добавить</button></div><div class="tablewrap"><table><thead><tr><th>Задача</th><th>Дело</th><th>Дедлайн</th><th>Статус</th><th></th></tr></thead><tbody id="tasksTable"></tbody></table></div></section>
+
+<section id="calendar" class="page hidden"><div class="top"><h1>Календарь</h1><button class="btn primary" onclick="openEvent()">+ Добавить событие</button></div><div class="grid" id="eventsGrid"></div></section>
+<section id="finance" class="page hidden"><div class="top"><h1>Финансы</h1></div><div class="grid"><div class="card stat"><div class="label">Начислено</div><div class="num" id="fTotal">0 ₽</div></div><div class="card stat"><div class="label">Оплачено</div><div class="num" id="fPaid">0 ₽</div></div><div class="card stat"><div class="label">Долг</div><div class="num" id="fDebt">0 ₽</div></div></div><div class="section"><div class="tablewrap"><table><thead><tr><th>Дело</th><th>Клиент</th><th>Стоимость</th><th>Оплачено</th><th>Долг</th></tr></thead><tbody id="financeTable"></tbody></table></div></div></section>
+<div style="position:fixed;bottom:10px;left:254px;color:#9a7a2c;font-size:11px">Личная CRM-система адвоката</div></main></div>
+
+<div class="modal" id="modal"><div class="modalbox"><h2 id="modalTitle"></h2><div id="modalBody"></div></div></div>
+<script>
+const KEY='legalCRM.v1';
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{
+clients:[{id:1,name:'Иванов Иван Иванович',phone:'+7 900 000-00-00',email:'ivanov@example.com'}],
+cases:[{id:1,num:'А40-12345/2026',clientId:1,cat:'Взыскание задолженности',court:'Арбитражный суд г. Москвы',status:'В производстве',total:150000,paid:100000}],
+tasks:[{id:1,title:'Подготовить ходатайство',caseId:1,due:'2026-09-20',status:'В работе'}],
+events:[{id:1,date:'2026-09-25',time:'14:30',title:'Судебное заседание',caseId:1,status:'Запланировано'}]
+};
+db.history=db.history||[];
+db.documents=db.documents||[];
+db.deadlines=db.deadlines||[];
+db.reminders=db.reminders||[];
+function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function rub(n){return new Intl.NumberFormat('ru-RU').format(n)+' ₽'}
+function client(id){return db.clients.find(x=>x.id==id)}
+function kase(id){return db.cases.find(x=>x.id==id)}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));document.getElementById(b.dataset.page).classList.remove('hidden')});
+function renderDashboard(){document.getElementById('sCases').textContent=db.cases.filter(x=>x.status!=='Закрыто').length;document.getElementById('sClients').textContent=db.clients.length;document.getElementById('sTasks').textContent=db.tasks.filter(x=>x.status!=='Выполнено').length+db.deadlines.filter(x=>x.due>=new Date().toISOString().slice(0,10)).length;document.getElementById('sDebt').textContent=rub(db.cases.reduce((a,x)=>a+x.total-x.paid,0));document.getElementById('dashEvents').innerHTML=[...db.events.map(e=>({...e,_type:'Событие'})),...db.reminders.map(r=>({id:r.id,date:r.when.slice(0,10),time:r.when.slice(11,16),title:'🔔 '+r.text,caseId:r.caseId,status:'Напоминание',_type:'Напоминание'})),...db.deadlines.map(d=>({id:d.id,date:d.due,time:'09:00',title:'⏰ '+d.title,caseId:d.caseId,status:'Срок',_type:'Срок'}))].sort((a,b)=>a.date.localeCompare(b.date)).map(e=>`<tr><td>${esc(e.date)} ${esc(e.time||'')}</td><td>${esc(e.title)}</td><td>${esc(kase(e.caseId)?.num||'Не привязано')}</td><td><span class="badge">${esc(e.status)}</span></td></tr>`).join('')||'<tr><td colspan="4" class="empty">Нет событий</td></tr>'}
+function renderClients(){let q=(document.getElementById('clientSearch')?.value||'').toLowerCase();document.getElementById('clientsTable').innerHTML=db.clients.filter(x=>(x.name+x.phone+x.email).toLowerCase().includes(q)).map(c=>`<tr><td><b>${esc(c.name)}</b></td><td>${esc(c.phone)}</td><td>${esc(c.email)}</td><td>${db.cases.filter(x=>x.clientId==c.id).length}</td><td><button class="btn" onclick="delClient(${c.id})">Удалить</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Клиентов нет</td></tr>'}
+function renderCases(){let q=(document.getElementById('caseSearch')?.value||'').toLowerCase();document.getElementById('casesTable').innerHTML=db.cases.filter(x=>(x.num+x.cat+x.court+(client(x.clientId)?.name||'')).toLowerCase().includes(q)).map(c=>`<tr><td><b>${esc(c.num)}</b></td><td>${esc(client(c.clientId)?.name||'')}</td><td>${esc(c.cat)}</td><td>${esc(c.court)}</td><td><span class="badge ${c.status==='Закрыто'?'ok':''}">${esc(c.status)}</span></td><td><button class="btn" onclick="openCaseCard(${c.id})">Карточка</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Дел нет</td></tr>'}
+function renderTasks(){document.getElementById('tasksTable').innerHTML=db.tasks.map(t=>`<tr><td>${esc(t.title)}</td><td>${esc(kase(t.caseId)?.num||'')}</td><td>${esc(t.due)}</td><td><span class="badge">${esc(t.status)}</span></td><td><button class="btn" onclick="toggleTask(${t.id})">${t.status==='Выполнено'?'Вернуть':'Выполнить'}</button> <button class="btn" onclick="delTask(${t.id})">Удалить</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Задач нет</td></tr>'}
+function renderFinance(){let total=db.cases.reduce((a,x)=>a+x.total,0),paid=db.cases.reduce((a,x)=>a+x.paid,0);['fTotal','fPaid','fDebt'].forEach((id,i)=>document.getElementById(id).textContent=rub([total,paid,total-paid][i]));document.getElementById('financeTable').innerHTML=db.cases.map(c=>`<tr><td>${esc(c.num)}</td><td>${esc(client(c.clientId)?.name||'')}</td><td>${rub(c.total)}</td><td>${rub(c.paid)}</td><td>${rub(c.total-c.paid)}</td></tr>`).join('')}
+function renderCalendar(){document.getElementById('eventsGrid').innerHTML=db.events.sort((a,b)=>(a.date+' '+(a.time||'')).localeCompare(b.date+' '+(b.time||''))).map(e=>`<div class="card"><b>${esc(e.date)} ${esc(e.time||'')}</b><p>${esc(e.title)}</p><span class="muted">Дело: ${esc(kase(e.caseId)?.num||'Не привязано')}</span><div style="margin-top:12px"><span class="badge">${esc(e.status||'Запланировано')}</span> <button class="btn" onclick="delEvent(${e.id})">Удалить</button></div></div>`).join('')||'<div class="empty">Событий нет</div>'}
+
+function delTask(id){if(confirm('Удалить задачу?')){db.tasks=db.tasks.filter(x=>x.id!=id);save()}}
+function openEvent(){let opts='<option value="">Без привязки</option>'+db.cases.map(c=>`<option value="${c.id}">${esc(c.num)} — ${esc(client(c.clientId)?.name||'')}</option>`).join('');show('Новое событие',`<form onsubmit="addEvent(event)"><div class="formgrid"><div class="full"><input id="et" required placeholder="Название события" style="width:100%"></div><input id="ed" type="date" required><input id="etime" type="time"><select id="ec">${opts}</select><select id="es"><option>Запланировано</option><option>Состоялось</option><option>Перенесено</option></select></div><div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Отмена</button><button class="btn primary">Сохранить</button></div></form>`)}
+function addEvent(e){e.preventDefault();let id=Date.now();let ev={id,date:ed.value,time:etime.value,title:et.value,caseId:ec.value?+ec.value:null,status:es.value};db.events.push(ev);scheduleAndroidNotification(ev,'event');closeModal();save()}
+function delEvent(id){if(confirm('Удалить событие?')){cancelAndroidNotification(id);db.events=db.events.filter(x=>x.id!=id);save()}}
+
+function openCaseCard(id){
+ const c=kase(id), cl=client(c.clientId);
+ const hist=db.history.filter(x=>x.caseId==id).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+ const docs=db.documents.filter(x=>x.caseId==id);
+ const dels=db.deadlines.filter(x=>x.caseId==id).sort((a,b)=>a.due.localeCompare(b.due));
+ const rems=db.reminders.filter(x=>x.caseId==id).sort((a,b)=>a.when.localeCompare(b.when));
+ show('Карточка дела',`<div class="case-tabs">
+ <button class="active" onclick="caseTab(this,'cp1')">Обзор</button>
+ <button onclick="caseTab(this,'cp2')">История</button>
+ <button onclick="caseTab(this,'cp3')">Документы</button>
+ <button onclick="caseTab(this,'cp4')">Сроки</button>
+ <button onclick="caseTab(this,'cp5')">Напоминания</button></div>
+ <div id="cp1" class="case-pane active">
+ <div class="formgrid">
+ <div><b>Номер</b><br>${esc(c.num)}</div><div><b>Клиент</b><br>${esc(cl?.name||'')}</div>
+ <div><b>Категория</b><br>${esc(c.cat)}</div><div><b>Суд</b><br>${esc(c.court)}</div>
+ <div><b>Статус</b><br>${esc(c.status)}</div><div><b>Финансы</b><br>${rub(c.paid)} / ${rub(c.total)}</div></div>
+ </div>
+ <div id="cp2" class="case-pane"><button class="btn primary" onclick="addHistory(${id})">+ Запись</button><div class="timeline">${hist.map(h=>`<div class="timeline-item"><b>${esc(h.date)}</b><br>${esc(h.text)}<div class="small muted">${esc(h.author||'Юрист')}</div></div>`).join('')||'<p class="muted">История пока пуста.</p>'}</div></div>
+ <div id="cp3" class="case-pane"><input id="docFile" type="file" multiple onchange="addDocuments(${id})"><div id="docsList">${docs.map(d=>`<div class="file-row"><span>📄 <b>${esc(d.name)}</b><br><span class="small muted">${esc(d.size||'')} · ${esc(d.date||'')}</span></span><button class="btn" onclick="delDocument(${d.id},${id})">Удалить</button></div>`).join('')||'<p class="muted">Документы не загружены.</p>'}</div></div>
+ <div id="cp4" class="case-pane"><button class="btn primary" onclick="addDeadline(${id})">+ Процессуальный срок</button>${dels.map(d=>`<div class="deadline-row"><span><b>${esc(d.due)}</b> — ${esc(d.title)}<br><span class="small muted">${esc(d.status||'Контроль')}</span></span><button class="btn" onclick="delDeadline(${d.id},${id})">Удалить</button></div>`).join('')||'<p class="muted">Сроки не добавлены.</p>'}</div>
+ <div id="cp5" class="case-pane"><button class="btn primary" onclick="addReminder(${id})">+ Напоминание</button>${rems.map(r=>`<div class="deadline-row"><span><b>${esc(r.when)}</b> — ${esc(r.text)}</span><button class="btn" onclick="delReminder(${r.id},${id})">Удалить</button></div>`).join('')||'<p class="muted">Напоминаний нет.</p>'}</div>
+ <div class="form-actions"><button class="btn" onclick="closeModal()">Закрыть</button></div>`);
+}
+function caseTab(btn,pane){document.querySelectorAll('.case-tabs button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.case-pane').forEach(x=>x.classList.remove('active'));document.getElementById(pane).classList.add('active')}
+function addHistory(caseId){show('Новая запись в истории',`<form onsubmit="saveHistory(event,${caseId})"><textarea id="ht" required placeholder="Что произошло по делу?" style="width:100%;height:110px"></textarea><input id="hd" type="date" value="${new Date().toISOString().slice(0,10)}" required style="width:100%;margin-top:10px"><div class="form-actions"><button type="button" class="btn" onclick="openCaseCard(${caseId})">Отмена</button><button class="btn primary">Сохранить</button></div></form>`)}
+function saveHistory(e,id){e.preventDefault();db.history.push({id:Date.now(),caseId:id,date:hd.value,text:ht.value,author:'Юрист'});save();openCaseCard(id)}
+function addDocuments(caseId){const fs=[...docFile.files];fs.forEach(f=>{db.documents.push({id:Date.now()+Math.random(),caseId,name:f.name,size:(f.size/1024).toFixed(1)+' КБ',date:new Date().toLocaleDateString('ru-RU')})});save();openCaseCard(caseId)}
+function delDocument(id,caseId){db.documents=db.documents.filter(x=>x.id!=id);save();openCaseCard(caseId)}
+function addDeadline(caseId){show('Новый процессуальный срок',`<form onsubmit="saveDeadline(event,${caseId})"><input id="dt" required placeholder="Название срока" style="width:100%;margin-bottom:10px"><input id="dd" type="date" required style="width:100%"><div class="form-actions"><button type="button" class="btn" onclick="openCaseCard(${caseId})">Отмена</button><button class="btn primary">Сохранить</button></div></form>`)}
+function saveDeadline(e,id){e.preventDefault();let did=Date.now();let rid=did+1;let d={id:did,caseId:id,title:dt.value,due:dd.value,status:'Контроль'};let r={id:rid,caseId:id,text:'Срок: '+dt.value,when:dd.value+' 09:00'};db.deadlines.push(d);db.reminders.push(r);scheduleAndroidNotification(r,'deadline');save();openCaseCard(id)}
+function delDeadline(id,caseId){let d=db.deadlines.find(x=>x.id==id);if(d){let r=db.reminders.find(x=>x.caseId==caseId&&x.text==='Срок: '+d.title&&x.when.startsWith(d.due));if(r){cancelAndroidNotification(r.id);db.reminders=db.reminders.filter(x=>x.id!=r.id)}}db.deadlines=db.deadlines.filter(x=>x.id!=id);save();openCaseCard(caseId)}
+function addReminder(caseId){show('Новое напоминание',`<form onsubmit="saveReminder(event,${caseId})"><input id="rt" required placeholder="Текст напоминания" style="width:100%;margin-bottom:10px"><input id="rw" type="datetime-local" required style="width:100%"><div class="form-actions"><button type="button" class="btn" onclick="openCaseCard(${caseId})">Отмена</button><button class="btn primary">Сохранить</button></div></form>`)}
+function saveReminder(e,id){e.preventDefault();let r={id:Date.now(),caseId:id,text:rt.value,when:rw.value};db.reminders.push(r);scheduleAndroidNotification(r,'reminder');save();openCaseCard(id)}
+function delReminder(id,caseId){cancelAndroidNotification(id);db.reminders=db.reminders.filter(x=>x.id!=id);save();openCaseCard(caseId)}
+
+function scheduleAndroidNotification(item,type){
+  try{
+    if(window.AndroidCRM && AndroidCRM.scheduleNotification){
+      AndroidCRM.scheduleNotification(String(item.id),String(item.when||item.date+' '+(item.time||'09:00')),String(item.title||item.text),String(type),String(kase(item.caseId)?.num||''));
+    }
+  }catch(e){}
+}
+function cancelAndroidNotification(id){try{if(window.AndroidCRM&&AndroidCRM.cancelNotification)AndroidCRM.cancelNotification(String(id))}catch(e){}}
+function renderAll(){renderDashboard();renderClients();renderCases();renderTasks();renderFinance();renderCalendar()}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function show(title,body){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=body;document.getElementById('modal').classList.add('open')}
+function openClient(){show('Новый клиент',`<form onsubmit="addClient(event)"><div class="formgrid"><div class="full"><input id="cn" required placeholder="ФИО / организация" style="width:100%"></div><div><input id="cp" placeholder="Телефон" style="width:100%"></div><div><input id="ce" type="email" placeholder="Email" style="width:100%"></div></div><div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Отмена</button><button class="btn primary">Сохранить</button></div></form>`)}
+function addClient(e){e.preventDefault();db.clients.push({id:Date.now(),name:cn.value,phone:cp.value,email:ce.value});closeModal();save()}
+function delClient(id){if(confirm('Удалить клиента?')){db.clients=db.clients.filter(x=>x.id!=id);db.cases=db.cases.filter(x=>x.clientId!=id);save()}}
+function openCase(){let opts=db.clients.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');show('Новое дело',`<form onsubmit="addCase(event)"><div class="formgrid"><input id="cnum" required placeholder="Номер дела"><select id="cc">${opts}</select><input id="ccat" required placeholder="Категория"><input id="court" required placeholder="Суд"><select id="cstatus"><option>В производстве</option><option>Ожидает суда</option><option>Закрыто</option></select><input id="total" type="number" min="0" placeholder="Стоимость, ₽"><input id="paid" type="number" min="0" placeholder="Оплачено, ₽"></div><div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Отмена</button><button class="btn primary">Сохранить</button></div></form>`)}
+function addCase(e){e.preventDefault();db.cases.push({id:Date.now(),num:cnum.value,clientId:+cc.value,cat:ccat.value,court:court.value,status:cstatus.value,total:+total.value||0,paid:+paid.value||0});closeModal();save()}
+function openTask(){let opts=db.cases.map(c=>`<option value="${c.id}">${esc(c.num)}</option>`).join('');show('Новая задача',`<form onsubmit="addTask(event)"><input id="tt" required placeholder="Задача" style="width:100%;margin-bottom:12px"><select id="tc" style="width:100%;margin-bottom:12px">${opts}</select><input id="td" type="date" required style="width:100%"><div class="form-actions"><button type="button" class="btn" onclick="closeModal()">Отмена</button><button class="btn primary">Сохранить</button></div></form>`)}
+function addTask(e){e.preventDefault();db.tasks.push({id:Date.now(),title:tt.value,caseId:+tc.value,due:td.value,status:'В работе'});closeModal();save()}
+function toggleTask(id){let t=db.tasks.find(x=>x.id==id);t.status=t.status==='Выполнено'?'В работе':'Выполнено';save()}
+renderAll();
+</script>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}</script>
+</body></html>
